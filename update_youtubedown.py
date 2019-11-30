@@ -11,6 +11,7 @@ url: str = "https://jwz.org/hacks/youtubedown"
 
 
 def my_version(path_to_file: str) -> str:
+    """Returns the version number of the local version as a string."""
     f = open(path_to_file, "rt")
 
     for line in f:
@@ -21,6 +22,7 @@ def my_version(path_to_file: str) -> str:
 
 
 def new_version(url: str) -> str:
+    """Returns the version number of the remote version as a string."""
     response = requests.get(url)
     if response:
         s = response.text

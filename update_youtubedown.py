@@ -40,7 +40,7 @@ def compare_versions(localv: str, remotev: str) -> None:
         print(f"local version {localv} is older than remote version {remotev}")
 
 
-def main():
+def main() -> None:
     compare_versions(my_version(path_to_file), new_version(url))
 
 

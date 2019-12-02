@@ -35,10 +35,13 @@ def new_version(url: str) -> str:
         return "Url Not Found."
 
 
-def main():
-    print(my_version(path_to_file))
+def compare_versions(localv: str, remotev: str) -> None:
+    if float(localv) < float(remotev):
+        print(f"local version {localv} is older than remote version {remotev}")
 
-    print(new_version(url))
+
+def main():
+    compare_versions(my_version(path_to_file), new_version(url))
 
 
 if __name__ == "__main__":

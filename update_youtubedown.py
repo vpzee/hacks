@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+# update_youtubedown
+
 # This program looks if there is a new version of youtubedown.
 # The original lives at https://www.jwz.org/hacks/youtubedown
 
@@ -10,7 +12,7 @@ path_to_file: str = "/Users/vincentzee/bin/youtubedown"
 url: str = "https://jwz.org/hacks/youtubedown"
 
 
-def my_version(path_to_file: str) -> str:
+def local_version(path_to_file: str) -> str:
     """Returns the version number of the local version as a string."""
     f = open(path_to_file, "rt")
 
@@ -21,7 +23,7 @@ def my_version(path_to_file: str) -> str:
     return l[4]
 
 
-def new_version(url: str) -> str:
+def remote_version(url: str) -> str:
     """Returns the version number of the remote version as a string."""
     response = requests.get(url)
     if response:
@@ -41,7 +43,7 @@ def compare_versions(localv: str, remotev: str) -> None:
 
 
 def main() -> None:
-    compare_versions(my_version(path_to_file), new_version(url))
+    compare_versions(local_version(path_to_file), remote_version(url))
 
 
 if __name__ == "__main__":

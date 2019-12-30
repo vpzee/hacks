@@ -5,6 +5,7 @@
 # This program looks if there is a new version of youtubedown.
 # The original lives at https://www.jwz.org/hacks/youtubedown
 
+import sys
 import requests
 
 path_to_file: str = "/Users/vincentzee/bin/youtubedown"
@@ -14,7 +15,11 @@ url: str = "https://jwz.org/hacks/youtubedown"
 
 def get_local_version(path_to_file: str) -> str:
     """Returns the version number of the local version as a string."""
-    f = open(path_to_file, "rt")
+    try:
+        f = open(path_to_file, "rt")
+    except FileNotFoundError as e:
+        print(e)
+        sys.exit()
 
     for line in f:
         if "$Revision" in line:

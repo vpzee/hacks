@@ -42,6 +42,15 @@ def get_remote_version(url: str) -> str:
         return "Url Not Found."
 
 
+def get_version_number(long_string: str) -> str:
+    """Extracts the version number from string and returns it."""
+    lines = long_string.splitlines()
+    for line in lines:
+        if "$Revision" in line:
+            l = line.split(" ")
+    return l[4]
+
+
 def compare_versions(localv: str, remotev: str) -> None:
     if float(localv) < float(remotev):
         print(f"local version {localv} is older than remote version {remotev}")

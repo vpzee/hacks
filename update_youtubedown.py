@@ -29,15 +29,11 @@ def get_local_version(path_to_file: str) -> str:
 
 
 def get_remote_version(url: str) -> str:
-    """Returns the version number of the remote version as a string."""
+    """Gets the remote version and returns it as a long string."""
     response = requests.get(url)
     if response:
         s = response.text
-        lines = s.splitlines()
-        for line in lines:
-            if "$Revision" in line:
-                l = line.split(" ")
-        return l[4]
+        return s
     else:
         return "Url Not Found."
 
@@ -54,10 +50,17 @@ def get_version_number(long_string: str) -> str:
 def compare_versions(localv: str, remotev: str) -> None:
     if float(localv) < float(remotev):
         print(f"local version {localv} is older than remote version {remotev}")
+    else:
+        print(f"local version = {localv}; remote version = {remotev}")
 
 
 def main() -> None:
-    compare_versions(get_local_version(path_to_file), get_remote_version(url))
+    remote_version = get_remote_version(url)
+
+    localv = get_local_version(path_to_file)
+    remotev = get_version_number(remote_version)
+
+    compare_versions(localv, remotev)
 
 
 if __name__ == "__main__":

@@ -13,26 +13,29 @@ install_dir: str = "/Users/vincentzee/bin"
 url: str = "https://jwz.org/hacks/youtubedown"
 
 
-def installed():
+def installed() -> bool:
+    """Checks if there is a file called youtubedown."""
     if os.path.isfile(path_to_file):
         return True
     else:
         return False
 
 
-def install_dir_exists():
+def install_dir_exists() -> bool:
+    """Checks if there is a path to the bin directory."""
     if os.path.isdir(install_dir):
         return True
     else:
         return False
 
 
-def make_executable(path_to_file):
+def make_executable(path_to_file: str) -> None:
+    """Make the file executable."""
     os.chmod(path_to_file, 0o755)
 
 
-def install_it(new_version):
-    """Install 'youtubedown'."""
+def install_it(new_version: str) -> None:
+    """Writing the file."""
     f = open(path_to_file, "w")
     print("Writing file")
     f.write(new_version)
@@ -54,7 +57,7 @@ def get_local_version(path_to_file: str) -> str:
 
 
 def get_remote_version(url: str) -> str:
-    """Gets the remote version and returns it as a long string."""
+    """Gets the remote file and returns it as a long string."""
     response = requests.get(url)
     if response:
         print("Getting remote version")
@@ -82,6 +85,7 @@ def is_newer_version(localv: str, remotev: str) -> bool:
 
 
 def backup_old_version(localv: str) -> None:
+    """Backup the old file with its version number attached."""
     new_path: str = path_to_file + "_" + localv
     print("Old version will be backed up to:")
     print(new_path)
@@ -89,6 +93,7 @@ def backup_old_version(localv: str) -> None:
 
 
 def main() -> None:
+    """The main function."""
     new_version: str = get_remote_version(url)
     # check if youtubedown is installed
     if not installed():
@@ -127,9 +132,6 @@ def main() -> None:
     else:
         print("Something unexpected happened!")
 
-
-# Comparing the two versions
-#    compare_versions(localv, remotev)
 
 if __name__ == "__main__":
     main()

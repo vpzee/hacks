@@ -7,8 +7,9 @@ import os.path
 import sys
 import requests
 
-path_to_file: str = "/Users/vincentzee/bin/youtubedown"
-install_dir: str = "/Users/vincentzee/bin"
+home_dir: str = os.path.expanduser("~") # /Users/vincentzee
+install_dir: str = home_dir + "/bin"
+path_to_file: str = home_dir + "/bin/youtubedown"
 
 url: str = "https://jwz.org/hacks/youtubedown"
 
@@ -34,10 +35,10 @@ def make_executable(path_to_file: str) -> None:
     os.chmod(path_to_file, 0o755)
 
 
-def install_it(new_version: str) -> None:
+def install_it(new_version: str, remotev: str) -> None:
     """Writing the file."""
     f = open(path_to_file, "w")
-    print("Writing file")
+    print(f".. Installing youtubedown version: {remotev}")
     f.write(new_version)
     f.close()
 
@@ -60,7 +61,7 @@ def get_remote_version(url: str) -> str:
     """Gets the remote file and returns it as a long string."""
     response = requests.get(url)
     if response:
-        print("Getting remote version")
+        #print("Getting remote version")
         s = response.text
         return s
     else:
@@ -87,15 +88,16 @@ def is_newer_version(localv: str, remotev: str) -> bool:
 def backup_old_version(localv: str) -> None:
     """Backup the old file with its version number attached."""
     new_path: str = path_to_file + "_" + localv
-    print("Old version will be backed up to:")
-    print(new_path)
+    print(".. Backing up old version to:")
+    print(".. " + new_path)
     os.rename(path_to_file, new_path)
 
 
 def main() -> None:
     """The main function."""
     new_version: str = get_remote_version(url)
-    # check if youtubedown is installed
+    remotev: str = get_version_number(new_version)
+
     if not installed():
         print("youtubedown doesn't seem to be installed!")
         answer = input("Do you want to install it? [y/n]\n")
@@ -103,18 +105,16 @@ def main() -> None:
         if answer == "y" or answer == "yes":
             if not install_dir_exists():
                 os.mkdir(install_dir)
-                install_it(new_version)
-                make_executable(path_to_file)
-            else:
-                install_it(new_version)
-                make_executable(path_to_file)
+                print(f".. Making the {install_dir} directory")
+
+            install_it(new_version, remotev)
+            make_executable(path_to_file)
         else:
             print("Exititng")
             sys.exit()
     elif installed():
-        # getting local and remote version strings
+        # getting local version string
         localv: str = get_local_version(path_to_file)
-        remotev: str = get_version_number(new_version)
 
         if is_newer_version(localv, remotev):
             print("There is a newer version available.")
@@ -122,7 +122,7 @@ def main() -> None:
             answer = input("Do you want to install it? [y/n]\n")
             if answer == "y" or answer == "yes":
                 backup_old_version(localv)
-                install_it(new_version)
+                install_it(new_version, remotev)
                 make_executable(path_to_file)
             else:
                 print("Exiting")

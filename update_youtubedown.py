@@ -16,18 +16,12 @@ url: str = "https://jwz.org/hacks/youtubedown"
 
 def installed() -> bool:
     """Checks if there is a file called youtubedown."""
-    if os.path.isfile(path_to_file):
-        return True
-    else:
-        return False
+    return os.path.isfile(path_to_file):
 
 
 def install_dir_exists() -> bool:
     """Checks if there is a path to the bin directory."""
-    if os.path.isdir(install_dir):
-        return True
-    else:
-        return False
+    return os.path.isdir(install_dir):
 
 
 def make_executable(path_to_file: str) -> None:
@@ -96,6 +90,7 @@ def backup_old_version(localv: str) -> None:
 def main() -> None:
     """The main function."""
     new_version: str = get_remote_version(url)
+    " TODO: This remotev variable is badly named..
     remotev: str = get_version_number(new_version)
 
     if not installed():

@@ -25,12 +25,12 @@ def main():
         print("Expected one or more filenames as arguments")
         print("example: astf picture.jpg")
         print("or     : astf picture.jpg picture2.png")
-        sys.exit()
 
-    filenames = sys.argv[1:]
+    else:
+        filenames = sys.argv[1:]
 
-    for filename in filenames:
-        process(filename)
+        for filename in filenames:
+            process(filename)
 
 
 if __name__=="__main__":

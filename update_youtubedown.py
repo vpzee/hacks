@@ -7,6 +7,7 @@ import os.path
 import sys
 import requests
 
+
 home_dir: str = os.path.expanduser("~") # /Users/vincentzee
 install_dir: str = home_dir + "/bin"
 path_to_file: str = home_dir + "/bin/youtubedown"

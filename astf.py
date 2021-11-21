@@ -11,11 +11,11 @@ def process(filename):
     im = Image.open(filename)
     x, y = im.size[0], im.size[1]
     parts = filename.rpartition(".")
-    newFilename = f"{parts[0]}_{x}x{y}.{parts[2]}"
-    answer = input(f"Does this look good y/[n]: {newFilename}\n")
+    new_filename = f"{parts[0]}_{x}x{y}.{parts[2]}"
+    answer = input(f"Does this look good y/[n]: {new_filename}\n")
 
     if answer == "y" or answer == "Y":
-        os.rename(filename, newFilename)
+        os.rename(filename, new_filename)
     else:
         print("Aborting")
 
@@ -33,5 +33,5 @@ def main():
             process(filename)
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     main()

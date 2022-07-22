@@ -8,7 +8,7 @@ import sys
 import requests
 
 
-home_dir: str = os.path.expanduser("~") # /Users/vincentzee
+home_dir: str = os.path.expanduser("~")  # /Users/vincentzee
 install_dir: str = home_dir + "/bin"
 path_to_file: str = home_dir + "/bin/youtubedown"
 
@@ -17,17 +17,23 @@ url: str = "https://jwz.org/hacks/youtubedown"
 
 def installed() -> bool:
     """Checks if there is a file called youtubedown."""
-    return os.path.isfile(path_to_file):
+    if os.path.isfile(path_to_file):
+        return True
+    else:
+        return False
 
 
 def install_dir_exists() -> bool:
     """Checks if there is a path to the bin directory."""
-    return os.path.isdir(install_dir):
+    if os.path.isdir(install_dir):
+        return True
+    else:
+        return False
 
 
-def make_executable(path_to_file: str) -> None:
+def make_executable(path_to_filename: str) -> None:
     """Make the file executable."""
-    os.chmod(path_to_file, 0o755)
+    os.chmod(path_to_filename, 0o755)
 
 
 def install_it(new_version: str, remotev: str) -> None:
@@ -38,25 +44,25 @@ def install_it(new_version: str, remotev: str) -> None:
     f.close()
 
 
-def get_local_version(path_to_file: str) -> str:
+def get_local_version(path_to_local_file: str) -> str:
     """Returns the version number of the local version as a string."""
     try:
-        f = open(path_to_file, "rt")
+        list_with_revision = ""
+        f = open(path_to_local_file, "rt")
         for line in f:
             if "$Revision" in line:
-                l = line.split(" ")
+                list_with_revision = line.split(" ")
         f.close()
-        return l[4]
+        return list_with_revision[4]
     except FileNotFoundError as e:
         print(e)
         sys.exit()
 
 
-def get_remote_version(url: str) -> str:
+def get_remote_version(remote_url: str) -> str:
     """Gets the remote file and returns it as a long string."""
-    response = requests.get(url)
+    response = requests.get(remote_url)
     if response:
-        #print("Getting remote version")
         s = response.text
         return s
     else:
@@ -66,10 +72,11 @@ def get_remote_version(url: str) -> str:
 def get_version_number(long_string: str) -> str:
     """Extracts the version number from string and returns it."""
     lines = long_string.splitlines()
+    list_with_revision = ""
     for line in lines:
         if "$Revision" in line:
-            l = line.split(" ")
-    return l[4]
+            list_with_revision = line.split(" ")
+    return list_with_revision[4]
 
 
 def is_newer_version(localv: str, remotev: str) -> bool:
@@ -91,7 +98,6 @@ def backup_old_version(localv: str) -> None:
 def main() -> None:
     """The main function."""
     new_version: str = get_remote_version(url)
-    " TODO: This remotev variable is badly named..
     remotev: str = get_version_number(new_version)
 
     if not installed():
